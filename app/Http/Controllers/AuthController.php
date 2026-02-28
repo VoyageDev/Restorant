@@ -37,7 +37,10 @@ class AuthController extends Controller
         $remember = $request->boolean('remember');
 
         if (Auth::attempt($credentials, $remember)) {
-            $request->session()->regenerate();
+            // Hanya regenerate session jika bukan API request
+            if (! $request->wantsJson()) {
+                $request->session()->regenerate();
+            }
 
             if ($request->wantsJson()) {
                 /** @var \App\Models\User $authUser */

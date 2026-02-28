@@ -56,6 +56,9 @@ class MenuController extends Controller
             'status' => 'required|in:Tersedia,Habis',
         ]);
 
+        // Set daily_stock_remaining to daily_stock when creating new menu
+        $validated['daily_stock_remaining'] = $validated['daily_stock'];
+
         $menu = Menu::create($validated);
 
         if ($request->wantsJson()) {
@@ -113,6 +116,16 @@ class MenuController extends Controller
             'daily_stock' => 'required|integer|min:0',
             'status' => 'required|in:Tersedia,Habis',
         ]);
+
+        // If daily_stock is increased, also increase daily_stock_remaining proportionally
+        if ($request->daily_stock > $menu->daily_stock) {
+            $increase = $request->daily_stock - $menu->daily_stock;
+            $validated['daily_stock_remaining'] = $menu->daily_stock_remaining + $increase;
+        } elseif ($request->daily_stock < $menu->daily_stock) {
+            // If daily_stock is decreased, adjust remaining but don't go negative
+            $decrease = $menu->daily_stock - $request->daily_stock;
+            $validated['daily_stock_remaining'] = max(0, $menu->daily_stock_remaining - $decrease);
+        }
 
         $menu->update($validated);
 

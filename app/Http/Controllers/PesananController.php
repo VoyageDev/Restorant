@@ -55,7 +55,7 @@ class PesananController extends Controller
             return back()->with('error', 'Pesanan tidak boleh kosong!');
         }
 
-        // VALIDASI: Cek apakah daily_stock cukup untuk semua item
+        // VALIDASI: Cek apakah daily_stock_remaining cukup untuk semua item
         foreach ($items as $item) {
             $menu = Menu::find($item['menu_id']);
 
@@ -70,15 +70,15 @@ class PesananController extends Controller
                 return back()->with('error', 'Menu dengan ID '.$item['menu_id'].' tidak ditemukan!');
             }
 
-            if ($menu->daily_stock < $item['qty']) {
+            if ($menu->daily_stock_remaining < $item['qty']) {
                 if ($request->wantsJson()) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Stock '.$menu->name.' tidak cukup! Tersedia: '.$menu->daily_stock.', Diminta: '.$item['qty'],
+                        'message' => 'Stock '.$menu->name.' tidak cukup! Tersedia hari ini: '.$menu->daily_stock_remaining.', Diminta: '.$item['qty'],
                     ], 400)->header('Content-Type', 'application/json');
                 }
 
-                return back()->with('error', 'Stock '.$menu->name.' tidak cukup! Tersedia: '.$menu->daily_stock.', Diminta: '.$item['qty']);
+                return back()->with('error', 'Stock '.$menu->name.' tidak cukup! Tersedia hari ini: '.$menu->daily_stock_remaining.', Diminta: '.$item['qty']);
             }
         }
 
@@ -114,15 +114,15 @@ class PesananController extends Controller
                     'note' => $item['note'],
                 ]);
 
-                // Kurangi daily_stock
+                // Kurangi daily_stock_remaining
                 $menu = Menu::find($item['menu_id']);
-                $newDailyStock = $menu->daily_stock - $item['qty'];
+                $newDailyStockRemaining = $menu->daily_stock_remaining - $item['qty'];
 
-                // Update status menu menjadi 'Habis' jika daily_stock = 0
-                $status = ($newDailyStock <= 0) ? 'Habis' : 'Tersedia';
+                // Update status menu menjadi 'Habis' jika daily_stock_remaining = 0
+                $status = ($newDailyStockRemaining <= 0) ? 'Habis' : 'Tersedia';
 
                 $menu->update([
-                    'daily_stock' => max(0, $newDailyStock), // Pastikan tidak negatif
+                    'daily_stock_remaining' => max(0, $newDailyStockRemaining), // Pastikan tidak negatif
                     'status' => $status,
                 ]);
             }

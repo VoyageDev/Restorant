@@ -14,12 +14,14 @@ class Menu extends Model
         'price',
         'stock',
         'daily_stock',
+        'daily_stock_remaining',
         'status',
     ];
 
     protected $casts = [
         'stock' => 'integer',
         'daily_stock' => 'integer',
+        'daily_stock_remaining' => 'integer',
     ];
 
     public function kategori()

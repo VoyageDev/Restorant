@@ -78,6 +78,9 @@
             </svg>
             Manajemen Meja
         </a>
+
+        {{-- Kategori Menu - Hanya Manajer & Owner --}}
+        @if(Auth::user()->Role === 'Manajer' || Auth::user()->Role === 'Owner')
         <a href="{{ route('kategori') }}"
             class="flex items-center px-4 py-2.5 rounded-lg transition-colors {{ request()->routeIs('kategori') ? 'text-blue-600 bg-blue-50 dark:bg-blue-900 dark:text-blue-200' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="mr-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -91,6 +94,10 @@
             </svg>
             Manajemen Kategori
         </a>
+        @endif
+
+        {{-- Manajemen User - Hanya Owner --}}
+        @if(Auth::user()->Role === 'Owner')
         <a href="{{ route('manajemen-user') }}"
             class="flex items-center px-4 py-2.5 rounded-lg transition-colors {{ request()->routeIs('manajemen-user') ? 'text-blue-600 bg-blue-50 dark:bg-blue-900 dark:text-blue-200' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="mr-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -102,6 +109,10 @@
             </svg>
             Manajemen User
         </a>
+        @endif
+
+        {{-- Karyawan - Hanya Manajer & Owner --}}
+        @if(Auth::user()->Role === 'Manajer' || Auth::user()->Role === 'Owner')
         <a href="{{ route('karyawan') }}"
             class="flex items-center px-4 py-2.5 rounded-lg transition-colors {{ request()->routeIs('karyawan') ? 'text-blue-600 bg-blue-50 dark:bg-blue-900 dark:text-blue-200' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="mr-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -115,6 +126,10 @@
             </svg>
             Karyawan
         </a>
+        @endif
+
+        {{-- Pendapatan - Hanya Manajer & Owner --}}
+        @if(Auth::user()->Role === 'Manajer' || Auth::user()->Role === 'Owner')
         <a href="{{ route('pendapatan') }}"
             class="flex items-center px-4 py-2.5 rounded-lg transition-colors {{ request()->routeIs('pendapatan') ? 'text-blue-600 bg-blue-50 dark:bg-blue-900 dark:text-blue-200' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="mr-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -129,6 +144,10 @@
             </svg>
             Pendapatan
         </a>
+        @endif
+
+        {{-- History - Hanya Manajer & Owner --}}
+        @if(Auth::user()->Role === 'Manajer' || Auth::user()->Role === 'Owner')
         <a href="{{ route('history') }}"
             class="flex items-center px-4 py-2.5 rounded-lg transition-colors {{ request()->routeIs('history') ? 'text-blue-600 bg-blue-50 dark:bg-blue-900 dark:text-blue-200' : 'text-gray-600 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
             <svg class="mr-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -140,5 +159,6 @@
             </svg>
             History
         </a>
+        @endif
     </nav>
 </aside>

@@ -147,11 +147,11 @@
                         form.menu_id = '{{ $menu->id }}';
                         form.menu_name = '{{ $menu->name }}';
                         form.price = {{ $menu->price }};
-                        form.daily_stock = {{ $menu->daily_stock }};
+                        form.daily_stock_remaining = {{ $menu->daily_stock_remaining }};
                         open = false;
                         search = '';
                     "
-                                            class="px-4 py-3 cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-700 border-b border-gray-50 dark:border-gray-700 last:border-0 transition-colors {{ $menu->daily_stock == 0 ? 'opacity-50 cursor-not-allowed' : '' }}">
+                                            class="px-4 py-3 cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-700 border-b border-gray-50 dark:border-gray-700 last:border-0 transition-colors {{ $menu->daily_stock_remaining == 0 ? 'opacity-50 cursor-not-allowed' : '' }}">
 
                                             <div class="text-sm font-bold text-gray-800 dark:text-gray-200">
                                                 {{ $menu->name }}
@@ -161,8 +161,8 @@
                                                     Rp {{ number_format($menu->price, 0, ',', '.') }}
                                                 </span>
                                                 <span
-                                                    class="px-2 py-0.5 rounded-full text-xs font-semibold {{ $menu->daily_stock > 0 ? 'text-green-800 bg-green-100 dark:bg-green-900 dark:text-green-200' : 'text-red-800 bg-red-100 dark:bg-red-900 dark:text-red-200' }}">
-                                                    Stock: {{ $menu->daily_stock }}
+                                                    class="px-2 py-0.5 rounded-full text-xs font-semibold {{ $menu->daily_stock_remaining > 0 ? 'text-green-800 bg-green-100 dark:bg-green-900 dark:text-green-200' : 'text-red-800 bg-red-100 dark:bg-red-900 dark:text-red-200' }}">
+                                                    Tersisa: {{ $menu->daily_stock_remaining }}
                                                 </span>
                                             </div>
                                         </li>
@@ -177,17 +177,17 @@
 
                         <div>
                             <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Jumlah Porsi
-                                <span class="text-xs font-normal text-gray-500">(Stock: <span
-                                        x-text="form.daily_stock > 0 ? form.daily_stock : '0'"></span>)</span>
+                                <span class="text-xs font-normal text-gray-500">(Tersisa Hari Ini: <span
+                                        x-text="form.daily_stock_remaining > 0 ? form.daily_stock_remaining : '0'"></span>)</span>
                             </label>
                             <input type="number" x-model.number="form.qty" min="1"
-                                :max="form.daily_stock > 0 ? form.daily_stock : 0" :disabled="form.daily_stock <= 0"
+                                :max="form.daily_stock_remaining > 0 ? form.daily_stock_remaining : 0" :disabled="form.daily_stock_remaining <= 0"
                                 required
                                 class="w-full px-4 py-2.5 text-sm bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 dark:text-white rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">
-                            <p x-show="form.daily_stock <= 0" class="text-xs text-red-600 dark:text-red-400 mt-1">
+                            <p x-show="form.daily_stock_remaining <= 0" class="text-xs text-red-600 dark:text-red-400 mt-1">
                                 Menu ini sedang habis
                             </p>
-                            <p x-show="form.qty > form.daily_stock && form.daily_stock > 0"
+                            <p x-show="form.qty > form.daily_stock_remaining && form.daily_stock_remaining > 0"
                                 class="text-xs text-yellow-600 dark:text-yellow-400 mt-1">
                                 Jumlah melebihi stock yang tersedia
                             </p>
@@ -314,7 +314,7 @@
                     menu_id: '',
                     menu_name: '',
                     price: 0,
-                    daily_stock: 0,
+                    daily_stock_remaining: 0,
                     qty: 1,
                     order_type: 'dine_in',
                     note: ''
@@ -360,15 +360,15 @@
                         return;
                     }
 
-                    // Validasi: Pastikan qty tidak lebih dari daily_stock
-                    if (this.form.qty > this.form.daily_stock) {
-                        alert('Jumlah pesanan melebihi stock yang tersedia! Stock: ' + this.form
-                            .daily_stock);
+                    // Validasi: Pastikan qty tidak lebih dari daily_stock_remaining
+                    if (this.form.qty > this.form.daily_stock_remaining) {
+                        alert('Jumlah pesanan melebihi stock yang tersedia! Stock tersisa: ' + this.form
+                            .daily_stock_remaining);
                         return;
                     }
 
-                    // Validasi: Pastikan daily_stock > 0
-                    if (this.form.daily_stock <= 0) {
+                    // Validasi: Pastikan daily_stock_remaining > 0
+                    if (this.form.daily_stock_remaining <= 0) {
                         alert('Menu ini sedang habis!');
                         return;
                     }
@@ -426,7 +426,7 @@
                     this.form.menu_id = '';
                     this.form.menu_name = '';
                     this.form.price = 0;
-                    this.form.daily_stock = 0;
+                    this.form.daily_stock_remaining = 0;
                     this.form.qty = 1;
                     this.form.order_type = 'dine_in';
                     this.form.note = '';

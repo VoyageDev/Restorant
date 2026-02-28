@@ -137,6 +137,7 @@
                             <th scope="col" class="px-4 py-3 font-medium text-right">Harga</th>
                             <th scope="col" class="px-4 py-3 font-medium text-center">Stock</th>
                             <th scope="col" class="px-4 py-3 font-medium text-center">Daily Stock</th>
+                            <th scope="col" class="px-4 py-3 font-medium text-center">Stock Hari Ini</th>
                             <th scope="col" class="px-4 py-3 font-medium text-center">Status</th>
                             <th scope="col" class="px-4 py-3 font-medium text-center">Aksi</th>
                         </tr>
@@ -156,6 +157,17 @@
 
                                 <td class="px-4 py-3 text-center text-blue-600 dark:text-blue-400 font-bold">
                                     {{ $menu->daily_stock }}</td>
+
+                                <td class="px-4 py-3 text-center">
+                                    <div class="flex flex-col items-center">
+                                        <span class="text-sm font-bold {{ $menu->daily_stock_remaining > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
+                                            {{ $menu->daily_stock_remaining }} / {{ $menu->daily_stock }}
+                                        </span>
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                                            ({{ $menu->daily_stock > 0 ? round(($menu->daily_stock_remaining / $menu->daily_stock) * 100) : 0 }}%)
+                                        </span>
+                                    </div>
+                                </td>
 
                                 <td class="px-4 py-3 text-center">
                                     <span
@@ -184,7 +196,7 @@
                             </tr>
                         @empty
                             <tr class="bg-white dark:bg-gray-800">
-                                <td colspan="7" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                                <td colspan="8" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
                                     Belum ada menu yang didaftarkan.
                                 </td>
                             </tr>

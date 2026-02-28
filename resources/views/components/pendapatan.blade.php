@@ -1,6 +1,6 @@
 @extends('Admin')
 
-@section('pageTitle', 'Pendapatan & Analitik')
+@section('pageTitle', 'Pendapatan Dan Analitik')
 
 @section('content')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

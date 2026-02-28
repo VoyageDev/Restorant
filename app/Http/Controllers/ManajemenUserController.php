@@ -45,7 +45,7 @@ class ManajemenUserController extends Controller
             ], 201);
         }
 
-        return redirect()->route('manajemen-user');
+        return redirect()->route('manajemen-user')->with('success', 'User berhasil ditambahkan!');
     }
 
     public function update(Request $request, User $user)
@@ -78,7 +78,7 @@ class ManajemenUserController extends Controller
             ]);
         }
 
-        return redirect()->route('manajemen-user');
+        return redirect()->route('manajemen-user')->with('success', 'User berhasil diperbarui!');
     }
 
     public function show(User $user)
